@@ -21,5 +21,4 @@ x_test_pneumonia = glob(os.path.join(test_pneumonia_dir, '*.jpeg'))
 x_val_normal = glob(os.path.join(val_normal_dir, '*.jpeg'))
 x_val_pneumonia = glob(os.path.join(val_normal_dir, '*.jpeg'))
 
-if __name__ == '__main__':
-    print(len(x_train_normal)+len(x_train_pneumonia))
+
