@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 from get_data.gather_data import *
 
 
-def get_image(path,verbose =False):
+
+def get_image(path, verbose=False):
     im = np.array(Image.open(path).resize((256, 256), Image.LANCZOS).convert("L"))
     if verbose:
         print(im.shape)
@@ -32,10 +33,27 @@ def histogram2d(mean_img, current_img):
     plt.show()
 
 
+def fourier(img):
+
+    transform_image = np.fft.rfft2(img)
+    shift = np.fft.fftshift(transform_image)
+    magnitude_spectrum = 20*np.log(np.abs(shift))
+    magnitude_spectrum = np.resize(magnitude_spectrum, (256, 256))
+
+    plt.subplot(121), plt.imshow(img, cmap='gray')
+    plt.title('Input Image'), plt.xticks([]), plt.yticks([])
+    plt.subplot(122), plt.imshow(magnitude_spectrum, cmap='gray')
+    plt.title('Magnitude Spectrum'), plt.xticks([]), plt.yticks([])
+    plt.show()
+    return magnitude_spectrum
+
+
 if __name__ == '__main__':
-    current = get_image(x_train_pneumonia[100], verbose=False)
-    mean = mean_image()
-    histogram2d(mean, current)
+    current = get_image(x_train_normal[100], verbose=False)
+    fou = fourier(current)
+    # mean = mean_image()
+    # histogram2d(mean, current)
+
 
 
 
