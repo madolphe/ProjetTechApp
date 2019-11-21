@@ -5,6 +5,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 from get_data.gather_data import *
+import cv2
 
 
 
@@ -33,6 +34,16 @@ def histogram2d(mean_img, current_img):
     plt.show()
 
 
+def sifting(img):
+
+
+    sift = cv2.xfeatures2d.SIFT_create()
+    kp = sift.detect(img,None)
+    img = cv2.drawKeypoints(img,kp,None)
+    cv2.imwrite('sift_keypoints.jpg', img)
+    cv2.imshow("h",img)
+
+
 def fourier(img):
 
     transform_image = np.fft.rfft2(img)
@@ -50,7 +61,8 @@ def fourier(img):
 
 if __name__ == '__main__':
     current = get_image(x_train_normal[100], verbose=False)
-    fou = fourier(current)
+    sifting(current)
+    # fou = fourier(current)
     # mean = mean_image()
     # histogram2d(mean, current)
 
