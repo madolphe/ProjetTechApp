@@ -9,6 +9,8 @@ verify_ssl = true
 matplotlib = "*"
 pillow = "*"
 opencv-contrib-python = "==3.4.2.16"
+scikit-image = "*"
+pywavelets = "*"
 
 [requires]
 python_version = "3.7"
