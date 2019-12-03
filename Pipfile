@@ -11,6 +11,7 @@ pillow = "*"
 opencv-contrib-python = "==3.4.2.16"
 scikit-image = "*"
 pywavelets = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
