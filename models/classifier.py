@@ -16,7 +16,7 @@ class Classifier:
     def train(self, training_set, target_set):
         pass
 
-    def predict(self):
+    def predict(self, x):
         pass
 
     def error(self):
