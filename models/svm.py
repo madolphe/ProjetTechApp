@@ -1,21 +1,13 @@
 
 
-from .classifier import Classifier
+from models.classifier import Classifier
+from get_data.get_dataset import *
 import os
+from sklearn.svm import SVC
 import numpy as np
 import matplotlib.pyplot as plt
 from glob import glob
-
-data_dir = os.path.join('..', 'Data', 'chest_xray_features_vect')
-print(data_dir)
-
-train_normal_dir = os.path.join(data_dir, 'x_train_normal.npy')
-test_normal_dir = os.path.join(data_dir, 'x_test_normal.npy')
-val_normal_dir = os.path.join(data_dir, 'x_val_normal.npy')
-
-train_pneumonia_dir = os.path.join(data_dir, 'x_train_pneumonia.npy')
-test_pneumonia_dir = os.path.join(data_dir, 'x_test_pneumonia.npy')
-val_pneunomia_dir = os.path.join(data_dir, 'x_val_pneumonia.npy')
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 class Svm(Classifier):
@@ -23,13 +15,37 @@ class Svm(Classifier):
     def __init__(self, hyperparams):
         super().__init__(hyperparams)
 
-    def train(self, training_set, target_set):
+    def train(self, train_set, target_set):
+        model = SVC(kernel='rbf')
+        model.fit(train_set, target_set)
+        return model
+
+    def predict(self):
+        y_pred = modelsvm.predict(X_test)
+        return y_pred
+
+    def error(self):
         pass
 
 
-
 if __name__ == '__main__':
-    data = np.load(train_normal_dir)
-    data2 = np.load(train_pneumonia_dir)
-    plt.scatter(data[0], data2[1], c=y, cmap='winter')
-    plt.show()
+    X_train = training_set.drop('class',axis=1)
+    Y_train = training_set['class']
+    Y_train = np.where(Y_train > 0, 1, Y_train)
+    Y_train = np.where(Y_train < 0, 0, Y_train)
+
+    X_test = test_set.drop('class', axis=1)
+    Y_test = test_set['class']
+    Y_test = np.where(Y_test > 0, 1, Y_test)
+    Y_test = np.where(Y_test < 0, 0, Y_test)
+
+    print(Y_train)
+
+    svm = Svm(hyperparams=0)
+    modelsvm = svm.train(X_train, Y_train)
+    prediction = svm.predict()
+    print(confusion_matrix(Y_test, prediction))
+    print(classification_report(Y_test, prediction))
+
+
+
