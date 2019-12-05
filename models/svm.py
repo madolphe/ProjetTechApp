@@ -20,17 +20,18 @@ class Svm(Classifier):
         model.fit(train_set, target_set)
         return model
 
-    def predict(self):
-        y_pred = modelsvm.predict(X_test)
-        return y_pred
-
     def error(self):
         pass
+
+    def predictsvm(self, svmmodel, target_set):
+        y_pred = svmmodel.predict(target_set)
+        return y_pred
 
 
 if __name__ == '__main__':
     X_train = training_set.drop('class',axis=1)
     Y_train = training_set['class']
+
     Y_train = np.where(Y_train > 0, 1, Y_train)
     Y_train = np.where(Y_train < 0, 0, Y_train)
 
@@ -39,11 +40,9 @@ if __name__ == '__main__':
     Y_test = np.where(Y_test > 0, 1, Y_test)
     Y_test = np.where(Y_test < 0, 0, Y_test)
 
-    print(Y_train)
-
-    svm = Svm(hyperparams=0)
-    modelsvm = svm.train(X_train, Y_train)
-    prediction = svm.predict()
+    svmobject = Svm(hyperparams=0)
+    modelsvm = svmobject.train(X_train, Y_train)
+    prediction = svmobject.predictsvm(modelsvm, X_test)
     print(confusion_matrix(Y_test, prediction))
     print(classification_report(Y_test, prediction))
 

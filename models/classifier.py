@@ -93,4 +93,4 @@ if __name__ == '__main__':
             # On retourne le couple vidé de son dernier élément
             # Afin de continuer à créer des permutations
             return couple[:-1]
-    permutation(ranges=[(1, 2, 3, 4), (1, 2, 3, 5, 6), (1, 2, 3)])
+    permutation(ranges=[(1, 2, 3, 4)])
