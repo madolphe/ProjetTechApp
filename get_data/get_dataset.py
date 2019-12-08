@@ -3,12 +3,12 @@ import os
 import pandas as pd
 from sys import getsizeof
 
-x_train_normal = np.load(os.path.join("Data", "chest_xray_features_vect", "x_train_normal.npy"))
-x_train_pneumonia = np.load(os.path.join("Data", "chest_xray_features_vect", "x_train_pneumonia.npy"))
-x_val_normal = np.load(os.path.join("Data", "chest_xray_features_vect", "x_val_normal.npy"))
-x_val_pneumonia = np.load(os.path.join("Data", "chest_xray_features_vect", "x_val_pneumonia.npy"))
-x_test_normal = np.load(os.path.join("Data", "chest_xray_features_vect", "x_test_normal.npy"))
-x_test_pneumonia = np.load(os.path.join("Data", "chest_xray_features_vect", "x_test_pneumonia.npy"))
+x_train_normal = np.load(os.path.join("..", "Data", "chest_xray_features_vect", "x_train_normal.npy"))
+x_train_pneumonia = np.load(os.path.join("..", "Data", "chest_xray_features_vect", "x_train_pneumonia.npy"))
+x_val_normal = np.load(os.path.join("..", "Data", "chest_xray_features_vect", "x_val_normal.npy"))
+x_val_pneumonia = np.load(os.path.join("..", "Data", "chest_xray_features_vect", "x_val_pneumonia.npy"))
+x_test_normal = np.load(os.path.join("..", "Data", "chest_xray_features_vect", "x_test_normal.npy"))
+x_test_pneumonia = np.load(os.path.join("..", "Data", "chest_xray_features_vect", "x_test_pneumonia.npy"))
 
 # Last column is going to be class label: 0 normal, 1 pneumonia
 x_train_normal = np.insert(x_train_normal, x_train_normal.shape[1], 0, axis=1)
