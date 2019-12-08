@@ -1,10 +1,9 @@
-#@TODO ajout classe 
 # -*- coding: utf-8 -*-
 
 from models.classifier import Classifier
 from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import log_loss
 import numpy as np
-import sys
 
 
 class Mlp(Classifier):
@@ -12,27 +11,26 @@ class Mlp(Classifier):
         super().__init__(hyperparams)
         self.x_train = x_train
         self.y_train = y_train
-        self.mlp = MLPClassifier() #best params
+        self.mlp = MLPClassifier(max_iter=1, hidden_layer_sizes=self.hyperparams[0], alpha=self.hyperparams[1],
+                                 momentum=self.hyperparams[2], solver='adam', learning_rate='adaptive',
+                                 warm_start=False)
 
-    def set_mlp(self):
-        # Permet de définir la fonction d'activation de la dernière couche à un softmax, sinon marche pas
-        # Manque l'initialisation des poids mais me semble que c'est la xavier init de base :)
-        # self.mlp.out_activation_ = 'softmax' fait de base qd multi-classe classification
-        # Permet de set à nouveau le mlp, sinon fonctionne pas pcq existe pas
-        # self.mlp = MLPClassifier(hidden_layer_sizes=self.hyperparams[0], alpha=self.hyperparams[1],
-        #                        momentum=self.hyperparams[2], solver='adam', learning_rate='adaptative')
-        self.mlp = MLPClassifier(solver='adam', learning_rate='adaptive')
-
-    def train(self, training_set, target_set):
+    def train(self, training_set, target_set, tuning=False):
         """
         """
-        print('multi-layer perceptron sklearn')
-        self.set_mlp()
-        # Récupérer les hyperparamètres depuis hyperparams après cross-validation
+        if tuning:
+            ranges = [(2, 10, 30, 60, 100), (0.00001, 0.0001, 0.001, 0.1), (0.9, 0.7, 0.5, 0.2)]
+            _ = self.cross_validation(ranges, self.x_train, np.expand_dims(self.y_train, axis=1), k=2,
+                                      ratio_validation=0.1)
+            self.hyperparams = self.best_params
+            print("Hyperparms choisis: ", self.hyperparams)
+        self.mlp = MLPClassifier(hidden_layer_sizes=self.hyperparams[2], alpha=self.hyperparams[1],
+                                 momentum=self.hyperparams[0], solver='adam', learning_rate='adaptive')
         self.mlp.fit(self.x_train, self.y_train)
 
     def predict(self, x):
         """
+        Permet de définir la prédiction du modèle d'une donnée nouvelle une fois qu'il est bien entraîné
         """
         prediction_proba = self.mlp.predict_proba(x)
         if prediction_proba < 0.5:
@@ -41,20 +39,42 @@ class Mlp(Classifier):
             prediction = 1
         return prediction
 
-
-    def error(self):
+    def error(self, x, y):
         """
         return actual error of the model
         """
-        error = self.mlp.loss_
+        error = log_loss(y, self.mlp.predict(x))
         return error
 
-    def accuracy(self, X, y):
+    def error_pred(self, training_set, target_set):
         """
         returns float,mean accuracy between dataset and labels
         """
-        accuracy = self.mlp.score(X, y)
+        accuracy = self.mlp.score(training_set, target_set)
         return accuracy
+
+    def check_overfitting(self):
+        """
+        Permet de vérifier que le modèle puisse apprendre, en vérifiant qu'il soit capable de faire
+        du sur-apprentissage
+        :return:
+        """
+        n_check = 5
+        X_check = self.x_train[:n_check]
+        y_check = self.y_train[:n_check]
+        self.mlp.fit(X_check, y_check)
+        accuracy = self.error_pred(X_check, y_check)
+        print('Accuracy d\'entraînement, devrait être 1.0: {:.3f}'.format(accuracy))
+        if accuracy < 0.98:
+            print('ATTENTION: L\'accuracy n\'est pas 100%.')
+        else:
+            print('SUCCÈS')
+
+    def accuracy(self, x, y):
+        accuracy = self.mlp.score(x, y)
+        return accuracy
+
+
 
 if __name__ == '__main__':
     """
@@ -77,12 +97,11 @@ if __name__ == '__main__':
         x_test = np.concatenate([x_normal_test, x_pneumonia_test])
         y_test = np.concatenate([x_normal_test_labels, x_pneumonia_test_labels])
 
-
-        hyperparams = [(2, 10, 30, 60, 100), (0.00001, 0.0001, 0.001, 0.1), (0.9, 0.7, 0.5, 0.2)]
+        hyperparams = [1000, 0.001, 0.7]
         mlp = Mlp(hyperparams, x_train, y_train)
-        mlp.train(x_train, y_train)
-        print("Error : ", mlp.error())
-        print("Accuracy : ", mlp.accuracy(x_test, y_test))
+        mlp.train(x_train, y_train, True)
+        print("Error on training set : ", mlp.error(x_train, y_train))
+        print("Accuracy on testing set : ", mlp.accuracy(x_test, y_test))
 
 
     test_functions()
