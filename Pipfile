@@ -15,6 +15,7 @@ pandas = "*"
 scikit-learn = "*"
 jupyter = "*"
 notebook = "*"
+graphviz = "*"
 
 [requires]
 python_version = "3.7"
