@@ -14,7 +14,6 @@ pywavelets = "*"
 pandas = "*"
 scikit-learn = "*"
 jupyter = "*"
-notebook = "*"
 
 [requires]
 python_version = "3.7"
