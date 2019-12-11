@@ -34,7 +34,6 @@ class Adaboost(Classifier):
         # Each time, train is called, we re-init a SGDClassifier object so that we could use correct parameters:
         self.reinit()
         self.adaboost_classifier.fit(training_set, target_set)
-        return
 
     def reinit(self):
         """
