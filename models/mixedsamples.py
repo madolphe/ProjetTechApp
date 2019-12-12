@@ -1,4 +1,9 @@
 from models.classifier import Classifier
+from models.svm import Svm
+from models.logistic_reg import Logistic
+from models.decision_tree import Forest
+from models.adaboost import Adaboost
+from models.mlp import Mlp
 import numpy as np
 from get_data.get_dataset import *
 from sklearn.utils import resample
@@ -8,6 +13,13 @@ import random as random
 class MixedSamples(Classifier):
     def __init__(self, index,hyperparams):
         super().__init__(index,hyperparams)
+        self.svm = Svm('rbf', ['gamma', 'régularisation'],hyperparams=[],)
+        self.decision_tree = Forest(['max_depth', 'min_samples_leaf,min_samples_split,n_estimators'], hyperparams=[])
+        self.adaboost  = Adaboost()
+        self.mlp = Mlp()
+        self.logreg = Logistic()
+
+
 
     def train(self, training_set, target_set, *args):
         pass
@@ -24,7 +36,7 @@ class MixedSamples(Classifier):
     def probabilities(self, x_test, *args):
         pass
 
-    def bootstrap(self,training):
+    def boostrap(self,training):
         print(training.shape)
         new_x_train = np.array([training[random.randint(0, len(training)-1),:] for i in range(len(training))])
         print(new_x_train.shape)
@@ -39,4 +51,4 @@ if __name__ == '__main__':
 
 
     M = MixedSamples('erer',hyperparams=[])
-    M.bootstrap(x_train)
+    M.boostrap(x_train)
