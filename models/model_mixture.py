@@ -9,9 +9,9 @@ import random as random
 import numpy as np
 
 
-class MixedSamples(Classifier):
-    def __init__(self, index,hyperparams):
-        super().__init__(index,hyperparams)
+class ModelMixture(Classifier):
+    def __init__(self, index, hyperparams):
+        super().__init__(index, hyperparams)
         self.svmrbf = Svm('rbf',['gamma','regularisation'],[1000,0.0001])
         self.decision_tree = Forest([20, 3, 2, 200])
         self.adaboost  = Adaboost([0.1])
@@ -19,7 +19,6 @@ class MixedSamples(Classifier):
         self.logreg = Logistic([0.01, 0.001])
         self.svmlinear = Svm('linear', ['no index'], [])
         self.svmpoly = Svm('poly',['degree'],[1])
-
 
     def train(self, training_set, target_set, *args):
         self.reinit()

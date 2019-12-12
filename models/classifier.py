@@ -117,10 +117,11 @@ class Classifier:
         roc = roc_curve(y, scores)
         pres_rec = precision_recall_curve(y, scores)
         if plot:
-            plt.title("Courbe ROC")
             plt.subplot(1, 2, 1)
+            plt.title("Courbe ROC")
             plt.plot(roc[0], roc[1])
             plt.subplot(1, 2, 2)
+            plt.title("Courbe Précision-Rappel")
             plt.plot(pres_rec[0], pres_rec[1])
             plt.show()
         return roc, pres_rec
