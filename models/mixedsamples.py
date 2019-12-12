@@ -13,11 +13,11 @@ import random as random
 class MixedSamples(Classifier):
     def __init__(self, index,hyperparams):
         super().__init__(index,hyperparams)
-        self.svm = Svm('rbf', ['gamma', 'régularisation'],hyperparams=[],)
-        self.decision_tree = Forest(['max_depth', 'min_samples_leaf,min_samples_split,n_estimators'], hyperparams=[])
-        self.adaboost  = Adaboost()
-        self.mlp = Mlp()
-        self.logreg = Logistic()
+        self.svm = Svm('rbf',hyperparams=[])
+        self.decision_tree = Forest([10, 3, 5, 200])
+        self.adaboost  = Adaboost([0.1])
+        self.mlp = Mlp([10, 0.1, 0.1])
+        self.logreg = Logistic([0.01, 0.001])
 
 
 
@@ -39,8 +39,13 @@ class MixedSamples(Classifier):
     def boostrap(self,training):
         print(training.shape)
         new_x_train = np.array([training[random.randint(0, len(training)-1),:] for i in range(len(training))])
-        print(new_x_train.shape)
-        print(new_x_train)
+        return new_x_train
+
+    def boostrapTarget(self,target):
+        print(target.shape)
+        new_x_train = np.array([target[random.randint(0, len(target)-1)] for i in range(len(target))])
+        return new_x_train
+
 
 
 if __name__ == '__main__':
