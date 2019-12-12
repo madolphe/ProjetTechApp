@@ -33,7 +33,6 @@ class Logistic(Classifier):
         # Each time, train is called, we re-init a SGDClassifier object so that we could use correct parameters:
         self.reinit()
         self.logistic_classifier = self.logistic_classifier.fit(training_set, target_set)
-        return
 
     def reinit(self):
         """

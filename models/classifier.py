@@ -61,10 +61,12 @@ class Classifier:
                                                           best_params=best_params, couple=couple, min_error=min_error)
             return couple[:-1], min_error
         else:
-            # Si l'élément L passée en paramètre est vide, c'est que nous avons fini de parcourir tous les ensembles
-            print("Tuple testé:", couple)
+            if couple == []:
+                return
+            # If ranges == [], it means that we picked every items in subset of ranges:
             couple.reverse()
-            self.hyperparams = couple
+            print("Tuple testé:", couple[:2])
+            self.hyperparams = couple[:2]
             taille_validation = round(ratio_validation*len(training_set))
             error = 0
             for fold in range(k):
@@ -79,8 +81,8 @@ class Classifier:
                 print(f"Tuple meilleur! On change pour:{couple} et une erreur moyenne de {error/k}")
                 min_error = (error/k)
                 self.best_params = self.hyperparams
-            # On retourne le couple vidé de son dernier élément
-            # Afin de continuer à créer des permutations
+            # We drop last elt of couple in order to keep testing all permutations
+            couple.reverse()
             return couple[:-1], min_error
 
     def get_confusion_matrix(self, x_test, y_test, verbose=True):
@@ -121,27 +123,3 @@ class Classifier:
             plt.plot(pres_rec[0], pres_rec[1])
             plt.show()
         return roc, pres_rec
-
-
-if __name__ == '__main__':
-    def permutation(ranges, couple=[]):
-        """
-        Recursive function that returns every permutations from multiple set. Used to test CV method.
-        :param ranges:
-        :param couple:
-        :return:
-        """
-        if not ranges == []:
-            for elt in ranges[-1]:
-                # print("elt courrant:", elt)
-                couple.append(elt)
-                couple, _ = permutation(ranges[:-1], couple=couple)
-                # print("Couple maj", couple)
-            return couple[:-1]
-        else:
-            # Si l'élément L passée en paramètre est vide, c'est que nous avons fini de parcourir tous les ensembles
-            print("Tuple testé:", couple)
-            # On retourne le couple vidé de son dernier élément
-            # Afin de continuer à créer des permutations
-            return couple[:-1]
-    # permutation(ranges=[(1, 2, 3, 4)])

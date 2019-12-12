@@ -13,7 +13,7 @@ scikit-image = "*"
 pywavelets = "*"
 pandas = "*"
 scikit-learn = "*"
-jupyter = "*"notebook = "*"
+jupyter = "*"
 graphviz = "*"
 
 [requires]
