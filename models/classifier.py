@@ -65,8 +65,8 @@ class Classifier:
                 return
             # If ranges == [], it means that we picked every items in subset of ranges:
             couple.reverse()
-            print("Tuple testé:", couple[:2])
-            self.hyperparams = couple[:2]
+            print("Tuple testé:", couple[:len(self.hyperparams)])
+            self.hyperparams = couple[:len(self.hyperparams)]
             taille_validation = round(ratio_validation*len(training_set))
             error = 0
             for fold in range(k):

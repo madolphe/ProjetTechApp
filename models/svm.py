@@ -6,14 +6,13 @@ from sklearn.metrics import classification_report
 
 
 class Svm(Classifier):
-    def __init__(self, kernel, hyperparams):
+    def __init__(self, kernel,index, hyperparams):
         """
         Constructor of the class. Added kernel to specify svm kernel we will use
         :param kernel:
         :param hyperparams:
         """
-        index = ['gamma', 'régularisation']
-        super().__init__(index, hyperparams)
+        super().__init__(hyperparams,index)
         # added kernel because of the svm implementation
         self.kernel = kernel
         self.model = SVC(kernel=kernel)

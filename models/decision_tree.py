@@ -33,9 +33,8 @@ class Forest(Classifier):
         """
         return actual error of the model
         """
-        # @TODO UPDATE CETTE PERTE !!!!!
-        error = hinge_loss(y, self.forest.predict(x))
-        return error
+        return np.mean(np.power(y - self.forest.predict(x), 2))
+
 
     def reinit(self):
         self.forest = RandomForestClassifier(bootstrap='True',
@@ -46,4 +45,5 @@ class Forest(Classifier):
                                              n_estimators=self.hyperparams[0])
 
     def probabilities(self, x, *args):
-        pass
+        return self.forest.predict_proba(x)[:,1]
+
