@@ -2,6 +2,7 @@ from models.classifier import Classifier
 import numpy as np
 from get_data.get_dataset import *
 from sklearn.utils import resample
+import random as random
 
 
 class MixedSamples(Classifier):
@@ -24,8 +25,10 @@ class MixedSamples(Classifier):
         pass
 
     def bootstrap(self,training):
-        print(training[:,0])
-        pass
+        print(training.shape)
+        new_x_train = np.array([training[random.randint(0, len(training)-1),:] for i in range(len(training))])
+        print(new_x_train.shape)
+        print(new_x_train)
 
 
 if __name__ == '__main__':
@@ -34,8 +37,6 @@ if __name__ == '__main__':
     x_test = test_set.loc[:, test_set.columns != 'class'].to_numpy()
     y_test = np.squeeze(test_set.loc[:, test_set.columns == 'class'].to_numpy())
 
-    print(x_train)
-    #print(x_train.shape)
 
     M = MixedSamples('erer',hyperparams=[])
-    M.bootstrap(x_test)
+    M.bootstrap(x_train)
