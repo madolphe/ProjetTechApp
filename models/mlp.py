@@ -47,11 +47,10 @@ class Mlp(Classifier):
         """
         Returns mean accuracy of prediction over a set
         """
-        accuracy = self.mlp.score(training_set, target_set)
-        return accuracy
+        return self.mlp.score(training_set, target_set)
 
     def probabilities(self, x_test, *args):
-        return self.mlp.predict_proba(x_test)
+        return self.mlp.predict_proba(x_test)[:, 1]
 
     def check_over_fitting(self, training_set, target_set):
         """

@@ -13,9 +13,9 @@ class Adaboost(Classifier):
                                                       learning_rate=self.hyperparams[0])
 
     def __str__(self):
-        res = "Estimator="+str(self.adaboost_classifier.base_estimator_)
+        res = "Estimator="+str(self.adaboost_classifier.base_estimator_)+"\n"
         res += super().__str__()
-        print(res)
+        return res
 
     def train(self, training_set, target_set, tuning=False):
         """
@@ -27,7 +27,7 @@ class Adaboost(Classifier):
         """
         if tuning:
             # For cross validation:
-            ranges = []
+            ranges = [(1,0.1,0.001,0.0001)]
             self.cross_validation(ranges, training_set, np.expand_dims(target_set, axis=1), k=5, ratio_validation=0.1)
             # When cross_val is done, we update our parameters:
             self.hyperparams = self.best_params
@@ -44,7 +44,7 @@ class Adaboost(Classifier):
                                                       learning_rate=self.hyperparams[0])
 
     def error(self, x, y):
-        return
+        return np.mean(np.power(y - self.adaboost_classifier.predict(x), 2))
 
     def predict(self, x, *args):
         return self.adaboost_classifier.predict(x)

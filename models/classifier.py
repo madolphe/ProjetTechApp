@@ -78,7 +78,8 @@ class Classifier:
                 error += self.error(x_val, y_val)
             print("Error moyenne: ", (error/k))
             if (error/k) < min_error:
-                print(f"Tuple meilleur! On change pour:{couple} et une erreur moyenne de {error/k}")
+                print(f"Tuple meilleur! On change pour:{couple[:len(self.hyperparams)]} et"
+                      f" une erreur moyenne de {error/k}")
                 min_error = (error/k)
                 self.best_params = self.hyperparams
             # We drop last elt of couple in order to keep testing all permutations
@@ -102,7 +103,7 @@ class Classifier:
         y_pred = self.predict(x_test)
         justesse = np.sum(y_pred == y_test) / len(y_test)
         print(f"Justesse: {justesse}%")
-        return confusion_matrix(y_test, y_pred, normalize='all')
+        return justesse, confusion_matrix(y_test, y_pred, normalize='all')
 
     def get_curves(self, x, y, plot=True):
         """
