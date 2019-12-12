@@ -4,7 +4,6 @@ from models.logistic_reg import Logistic
 from models.decision_tree import Forest
 from models.adaboost import Adaboost
 from models.mlp import Mlp
-from sklearn.utils import resample
 import random as random
 import numpy as np
 
@@ -22,7 +21,7 @@ class ModelMixture(Classifier):
 
     def train(self, training_set, target_set, *args):
         self.reinit()
-        x_train1,y_train1 = self.boostrap(training_set,target_set)
+        x_train1, y_train1 = self.boostrap(training_set,target_set)
         x_train2, y_train2 = self.boostrap(training_set, target_set)
         x_train3, y_train3 = self.boostrap(training_set, target_set)
         x_train4, y_train4 = self.boostrap(training_set, target_set)
@@ -47,9 +46,10 @@ class ModelMixture(Classifier):
         predictsvmlinear = self.svmlinear.predict(x)
         predictsvmpoly = self.svmpoly.predict(x)
 
-        totalpredict = np.array([predictada,predictlog,predictmlp,predictsvmrbf,predicttree,predictsvmlinear,predictsvmrbf]).T
+        totalpredict = np.array([predictada, predictlog, predictmlp, predictsvmrbf, predicttree,
+                                 predictsvmlinear, predictsvmrbf]).T
         print(totalpredict.shape)
-        totalpredict = np.sum(totalpredict,axis=1)
+        totalpredict = np.sum(totalpredict, axis=1)
         totalpredict = [1 if totalpredict[i] > 3 else 0 for i in range(totalpredict.shape[0])]
         return totalpredict
 
@@ -62,9 +62,10 @@ class ModelMixture(Classifier):
         predictsvmlinear = self.svmlinear.predict(x_test)
         predictsvmpoly = self.svmpoly.predict(x_test)
 
-        totalpredict = np.array([predictada, predictlog, predictmlp, predictsvmrbf, predicttree,predictsvmlinear,predictsvmrbf]).T
+        totalpredict = np.array([predictada, predictlog, predictmlp, predictsvmrbf, predicttree,
+                                 predictsvmlinear, predictsvmrbf]).T
 
-        return np.mean(totalpredict,axis=1)
+        return np.mean(totalpredict, axis=1)
 
     def reinit(self):
         """
@@ -79,22 +80,19 @@ class ModelMixture(Classifier):
         self.svmlinear = Svm('linear', ['no index'], [])
         self.svmpoly = Svm('poly', ['degree'], [1])
 
-
     def error(self, *args):
         pass
 
     def error_pred(self, training_set, target_set, *args):
         pass
 
-    def boostrap(self,training,target):
+    def boostrap(self, training, target):
         x_new_train = []
         y_new_train = []
         for i in range(training.shape[0]):
             index = random.randint(0, len(training)-1)
             x_new_train.append(training[index,:])
             y_new_train.append(target[index])
-
-        #new_x_train = np.array([training[random.randint(0, len(training)-1),:] for i in range(len(training))])
         return x_new_train, y_new_train
 
 

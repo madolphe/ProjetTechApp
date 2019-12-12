@@ -1,7 +1,6 @@
 from models.classifier import Classifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
-from sklearn.metrics import hinge_loss
 import numpy as np
 
 
@@ -30,11 +29,7 @@ class Forest(Classifier):
         print(classification_report(training_set, target_set))
 
     def error(self, x, y):
-        """
-        return actual error of the model
-        """
         return np.mean(np.power(y - self.forest.predict(x), 2))
-
 
     def reinit(self):
         self.forest = RandomForestClassifier(bootstrap='True',

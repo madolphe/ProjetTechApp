@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report
 
 
 class Svm(Classifier):
-    def __init__(self, kernel,index, hyperparams):
+    def __init__(self, kernel, index, hyperparams):
         """
         Constructor of the class. Added kernel to specify svm kernel we will use
         :param kernel:
@@ -53,7 +53,6 @@ class Svm(Classifier):
         error = hinge_loss(y, self.model.predict(x))
         return error
 
-    # print stats on the classification
     def error_pred(self, training_set, target_set, *args):
         print(classification_report(training_set, target_set))
 
