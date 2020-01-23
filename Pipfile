@@ -7,6 +7,14 @@ verify_ssl = true
 
 [packages]
 matplotlib = "*"
+pillow = "*"
+opencv-contrib-python = "==3.4.2.16"
+scikit-image = "*"
+pywavelets = "*"
+pandas = "*"
+scikit-learn = "*"
+jupyter = "*"
+graphviz = "*"
 
 [requires]
 python_version = "3.7"
