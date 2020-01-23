@@ -29,3 +29,10 @@ Pour lancer le notebook principal se lance:
 pipenv run jupyter notebook
 ```
 Puis sélectionner bench-test.ipynb !
+
+# Description
+
+Ce dossier contient l'implémentation de 6 outils de classification testés sur des images de thorax présentant (ou non) une anomalie (pneumonie). L'ensemble du travail est résumé dans le notebook bench-test.ipynb. La figure suivante présente un exemple de métriques utilisé pour la comparaison des méthodes. 
+
+![alt text](https://github.com/madolphe/ProjetTechApp/Rapport-PDF/images/precision_rappel.png)
+![alt text](https://github.com/madolphe/ProjetTechApp/Rapport-PDF/images/ROC.png)
